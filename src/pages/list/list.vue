@@ -83,7 +83,7 @@
 						page: this.fetch.pageNum,
 						limit: this.fetch.pageLimit,
 						id: id,
-						token: token || ''
+						token: token
 					},
 					success: (ret) => {
 						if (ret.data.code === 200) {
@@ -91,13 +91,9 @@
 							this.fetch.total = ret.data.item.total
 							this.list = this.list.concat(ret.data.item.data);
 						} else {
-							uni.showToast({title: ret.data.msg, icon: 'success'})
+							uni.navigateTo({url: '../new/new'})
+							uni.showToast({title: 'Please Login', icon: 'success'})
 							this.loadMore = 'noMore'
-							// #ifdef H5
-							uni.navigateTo({
-								url: '../login/login'
-							})
-							// #endif
 						}
 					},
 					fail: () => {
