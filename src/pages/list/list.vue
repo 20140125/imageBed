@@ -93,6 +93,7 @@
 						} else {
 							uni.navigateTo({url: '../new/new'})
 							uni.showToast({title: 'Please Login', icon: 'success'})
+							uni.clearStorage()
 							this.loadMore = 'noMore'
 						}
 					},
