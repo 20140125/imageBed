@@ -1,0 +1,88 @@
+{
+	"pages": [{
+			//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+			"path": "pages/new/new",
+			"style": {
+				"navigationBarTitleText": "魔盒逗图-最新",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/detail/detail",
+			"style": {
+				"navigationBarTitleText": "详情",
+				"navigationBarBackgroundColor": "#000000",
+				"backgroundColor": "#000000",
+				"app-plus": {
+					"bounce": "none",
+					"titleNView": {
+						"buttons": [{
+							"type": "share"
+						}]
+					}
+				},
+				"h5": {
+					"titleNView": {
+						"buttons": [{
+							"type": "favorite"
+						}]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/tag/tag",
+			"style": {
+				"navigationBarTitleText": "魔盒逗图-分类",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/list/list",
+			"style": {
+				"navigationBarTitleText": "专题",
+				"enablePullDownRefresh": true
+			},
+			"app-plus": {
+				"bounce": "none",
+				"titleNView": {
+					"buttons": [{
+						"type": "share"
+					}]
+				}
+			},
+			"h5": {
+				"titleNView": {
+					"buttons": [{
+						"type": "favorite"
+					}]
+				}
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "魔盒逗图",
+		"navigationBarBackgroundColor": "#409eff",
+		"backgroundColor": "#EFEFEF"
+	},
+	"tabBar": {
+		"color": "#444444",
+		"selectedColor": "#409eff",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [{
+				"pagePath": "pages/new/new",
+				"iconPath": "static/index-0.png",
+				"selectedIconPath": "static/index-1.png",
+				"text": "最新"
+			},
+			{
+				"pagePath": "pages/tag/tag",
+				"iconPath": "static/tag-0.png",
+				"selectedIconPath": "static/tag-1.png",
+				"text": "分类"
+			}
+		]
+	}
+}
