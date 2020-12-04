@@ -4,7 +4,7 @@
 			<view class="grid-c-06" v-for="(item, index) in list" :key="index">
 				<view class="panel" @click="goDetail(item)">
 					<image class="card-img card-list2-img" :src="item.href || ''"></image>
-					<text class="card-num-view card-list2-num-view">{{item.width || 0}}P</text>
+					<text class="card-num-view card-list2-num-view">{{item.width || ''}}{{item.width ? 'P' : ''}}</text>
 					<view class="card-bottm row">
 						<view class="car-title-view row">
 							<text class="card-title card-list2-title">{{item.name}}</text>

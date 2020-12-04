@@ -1,5 +1,5 @@
 <template>
-	<view style="width: 100%;background-color: #FFFFFF;">
+	<view style="width: 100%;">
 		<view class="search-box">				
 			<view class="input-box">
 				<input type="text" :adjust-position="true" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword" @confirm="doSearch(false)"
@@ -16,7 +16,7 @@
 							<rich-text :nodes="row.name"></rich-text>
 						</view>
 						<view class="keyword-img" @tap.stop="setKeyword(row)">
-							<image src="/static/HM-search/back.png"></image>
+							<image style="right: 20upx;" src="/static/HM-search/back.png"></image>
 						</view>
 					</view>
 				</block>
@@ -38,7 +38,7 @@
 					<view class="keyword-list-header">
 						<view>热门搜索</view>
 						<view>
-							<image @tap="hotToggle" :src="'/static/HM-search/attention'+forbid+'.png'"></image>
+							<image style="right: 20upx;" @tap="hotToggle" :src="'/static/HM-search/attention'+forbid+'.png'"></image>
 						</view>
 					</view>
 					<view class="keyword" v-if="forbid==''">
@@ -55,8 +55,8 @@
 			<view class="grid">
 				<view class="grid-c-06" v-for="(item, index) in list" :key="index">
 					<view class="panel" @click="goDetail(item)">
-						<image class="card-img card-list2-img" :src="item.href || 0"></image>
-						<text class="card-num-view card-list2-num-view">{{item.width || 0}}P</text>
+						<image class="card-img card-list2-img" :src="item.href || ''"></image>
+						<text class="card-num-view card-list2-num-view">{{item.width || ''}}{{item.width ? 'P' : ''}}</text>
 						<view class="card-bottm row">
 							<view class="car-title-view row">
 								<text class="card-title card-list2-title">{{item.name}}</text>
@@ -102,6 +102,12 @@
 		onShow() {
 			this.showImageItme = false
 			this.showSearchBox = true
+		},
+		onReachBottom() {
+			this.getData(7);
+		},
+		onPullDownRefresh() {
+			this.getData(7);
 		},
 		methods: {
 			init: function() {
@@ -200,14 +206,14 @@
 			 * @param {Object} keyword
 			 */
 			doSearch: function(item) {
-				this.keyword = item.name;
+				this.keyword = item.name ? item.name : item;
 				this.saveKeyword(this.keyword); //保存为历史 
 				uni.showToast({
 					title: this.keyword,
 					icon: 'none',
 					duration: 2000
 				});
-				this.getData(item.id)
+				this.getData(7)
 			},
 			/**
 			 * todo:保存关键字到历史记录
@@ -317,7 +323,7 @@
 </script>
 <style>
 	view{display:block;}
-	.uni-input-placeholder{padding-left: 20upx!important;}
+	.uni-input-input{padding-left: 20upx!important;}
 	.search-box {width:95%;background-color:rgb(242,242,242);padding:15upx 2.5%;display:flex;justify-content:space-between;position:sticky;top: 0;}
 	.search-box .mSearch-input-box{width: 100%;}
 	.search-box .input-box {width:85%;flex-shrink:1;display:flex;justify-content:center;align-items:center;}
@@ -325,18 +331,18 @@
 	.search-box .input-box>input {width:100%;height:60upx;font-size:32upx;border:0;border-radius:60upx;-webkit-appearance:none;-moz-appearance:none;appearance:none;padding:0 3%;margin:0;background-color:#ffffff;}
 	.placeholder-class {color:#9e9e9e;}
 	.search-keyword {width:100%;background-color:rgb(242,242,242);}
-	.keyword-list-box {height:calc(100vh - 110upx);padding-top:10upx;border-radius:20upx 20upx 0 0;background-color:#fff;}
+	.keyword-list-box {height:calc(100vh - 110upx);padding-top:10upx;border-radius:15upx 15upx 0 0;background-color:#fff;}
 	.keyword-entry-tap {background-color:#eee;}
 	.keyword-entry {width:94%;height:80upx;margin:0 3%;font-size:30upx;color:#333;display:flex;justify-content:space-between;align-items:center;border-bottom:solid 1upx #e7e7e7;}
 	.keyword-entry image {width:60upx;height:60upx;}
 	.keyword-entry .keyword-text,.keyword-entry .keyword-img {height:80upx;display:flex;align-items:center;}
 	.keyword-entry .keyword-text {width:90%;}
 	.keyword-entry .keyword-img {width:10%;justify-content:center;}
-	.keyword-box {height:calc(100vh - 110upx);border-radius:20upx 20upx 0 0;background-color:#fff;}
+	.keyword-box {height:calc(100vh - 110upx);border-radius:40upx 40upx 0 0;background-color:#fff;}
 	.keyword-box .keyword-block {padding:10upx 0;}
-	.keyword-box .keyword-block .keyword-list-header {width:94%;padding:10upx 3%;font-size:27upx;color:#333;display:flex;justify-content:space-between;}
+	.keyword-box .keyword-block .keyword-list-header {width:94%;padding:10upx 4%;font-size:27upx;color:#333;display:flex;justify-content:space-between;}
 	.keyword-box .keyword-block .keyword-list-header image {width:40upx;height:40upx;}
-	.keyword-box .keyword-block .keyword {width:94%;padding:3px 3%;display:flex;flex-flow:wrap;justify-content:flex-start;}
+	.keyword-box .keyword-block .keyword {width:94%;padding:6upx 4%;display:flex;flex-flow:wrap;justify-content:flex-start;}
 	.keyword-box .keyword-block .hide-hot-tis {display:flex;justify-content:center;font-size:28upx;color:#6b6b6b;}
 	.keyword-box .keyword-block .keyword>view {display:flex;justify-content:center;align-items:center;border-radius:60upx;padding:0 20upx;margin:10upx 20upx 10upx 0;height:60upx;font-size:28upx;background-color:rgb(242,242,242);color:#6b6b6b;}
 </style>
