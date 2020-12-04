@@ -6,30 +6,6 @@
 				<view class="login-title">{{!isCanUse ? '授权登录' : ''}}</view>
 			</button>
 		</view>
-		<!-- <view class="center-list">
-			<view class="center-list-item border-bottom">
-				<text class="list-icon">&#xe60c;</text>
-				<text class="list-text">收藏图片</text>
-				<text class="navigat-arrow">&#xe65e;</text>
-			</view>
-			<view class="center-list-item">
-				<text class="list-icon">&#xe60d;</text>
-				<text class="list-text">收藏图集</text>
-				<text class="navigat-arrow">&#xe65e;</text>
-			</view>
-		</view>
-		<view class="center-list">
-			<view class="center-list-item border-bottom">
-				<text class="list-icon">&#xe60b;</text>
-				<text class="list-text">管理图片</text>
-				<text class="navigat-arrow">&#xe65e;</text>
-			</view>
-			<view class="center-list-item">
-				<text class="list-icon">&#xe61a;</text>
-				<text class="list-text">上传图片</text>
-				<text class="navigat-arrow">&#xe65e;</text>
-			</view>
-		</view> -->
 		<view class="center-list">
 			<view class="center-list-item border-bottom">
 				<text class="list-icon">&#xe603;</text>
@@ -40,6 +16,15 @@
 				<text class="list-icon">&#xe609;</text>
 				<text class="list-text">账号管理</text>
 				<text class="navigat-arrow">&#xe65e;</text>
+			</view>
+		</view>
+		
+		<view class="about">
+			<view class="content">
+				<text class="tip">版权申明</text>
+				<view class="desc">本站表情来于互联网，版权归原作者所有。</view>
+				<view class="desc">本站不存储表情图资源，表情图请勿商用。</view>
+				<view class="desc">如有侵犯您权利的资源，请联系我们处理。</view>
 			</view>
 		</view>
 	</view>
@@ -141,4 +126,29 @@
 </script>
 
 <style>
+	.about {
+		flex-direction: column;
+		flex: 1;
+		margin-top: 300upx;
+		text-align: center;
+		background-color: #FFFFFF;
+	}
+	.content {
+		flex: 1;
+		padding: 30upx;
+		flex-direction: column;
+		justify-content: center;
+		font-size: 30upx;
+		color: #353333;
+	}
+	.tip {
+		margin-top: 20upx;
+		color: #000000;
+		text-align: center;
+	}
+	.desc {
+		margin-top: 30upx;
+		display: block;
+		font-size: 28upx;
+	}
 </style>

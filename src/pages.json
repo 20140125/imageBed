@@ -68,6 +68,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/hot/hot",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "魔盒逗图-热搜榜",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
@@ -85,6 +94,12 @@
 				"iconPath": "static/index-0.png",
 				"selectedIconPath": "static/index-1.png",
 				"text": "最新"
+			},
+			{
+				"pagePath": "pages/hot/hot",
+				"iconPath": "static/hot-0.png",
+				"selectedIconPath": "static/hot-1.png",
+				"text": "热门"
 			},
 			{
 				"pagePath": "pages/tag/tag",

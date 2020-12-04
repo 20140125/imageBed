@@ -22,7 +22,6 @@
 	export default {
 		data() {
 			return {
-				providerList: [],
 				list: [],
 				fetch: {pageNum: 0, pageLimit: 10, total: 1},
 				id: 0,
