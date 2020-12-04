@@ -59,7 +59,16 @@
 				}
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/center/center",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "个人中心",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "魔盒逗图",
@@ -82,6 +91,12 @@
 				"iconPath": "static/tag-0.png",
 				"selectedIconPath": "static/tag-1.png",
 				"text": "分类"
+			},
+			{
+				"pagePath": "pages/center/center",
+				"iconPath": "static/center-0.png",
+				"selectedIconPath": "static/center-1.png",
+				"text": "个人中心"
 			}
 		]
 	}

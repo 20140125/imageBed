@@ -217,6 +217,8 @@ view.tag,
 	width: 150upx;
 	height: 150upx;
 	border-radius: 150upx;
+	line-height: 150upx;
+	/* margin-top: 30upx; */
 }
 
 .logo-title {
@@ -241,11 +243,14 @@ view.tag,
 }
 
 .login-title {
-	height: 150upx;
+	height: 40upx;
 	align-items: self-start;
 	justify-content: center;
 	flex-direction: column;
+	color: #403f3f;
+	font-size: 30upx;
 	margin-left: 20upx;
+	margin-bottom: 20upx;
 }
 
 .center-list {
@@ -355,33 +360,14 @@ view.tag,
 }
 
 button {
-	width: 710upx;
-	height: 80upx;
-	line-height: 80upx;
 	text-align: center;
-	vertical-align:middle;  
-	font-size: 38upx;
+	vertical-align:middle;
+	background-color: #409EFF !important;
 }
 
-button.login {
-	background-color: #409eff;
-	color: #fff;
-	margin-top: 30upx;
+button:after {
+	border:none !important;
 }
-
-button.register {
-	margin-top: 30upx;
-	color: #409eff;
-	background-color: #fff;
-	border-color: #409eff;
-	border-width: 2upx;
-}
-
-.register.hover,
-.login.hover {
-	opacity: 0.6;
-}
-
 
 
 /* 详情页面 */

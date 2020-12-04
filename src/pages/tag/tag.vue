@@ -2,7 +2,7 @@
 	<view class="index">
 		<view class="grid grid-c-12" style="margin-top: 60upx;">
 			<uni-list class="grid-c-12">
-				 <uni-list-item v-for="(item, index) in data":key="item.id":clickable='true' :title="item.name" @click="goBack(item)">
+				 <uni-list-item v-for="(item, index) in list":key="item.id":clickable='true' :title="item.name" @click="goBack(item)">
 					<view slot="footer" style="right: 10upx;">
 						<uni-icons :type="type"></uni-icons>
 					</view>
@@ -21,31 +21,30 @@
 	export default {
 		data() {
 			return {
-				data: [],
+				list: [],
 				type: 'arrowright',
 				loadMore: 'more',
 				contentText:{contentdown: '上拉显示更多',contentrefresh: '正在加载...',contentnomore: ''},
-				userInfo:{}
+				pid:0
 			}
 		},
 		components: {uniNavBar,uniList,uniListItem,uniLoadMore},
 		onShow(){
-			this.getData()
+			this.getData(this.pid)
 		},
 		methods: {
 			/**
 			 * todo:获取分类数据
 			 */
-			getData: function() {
-				this.type = 'arrowright'
+			getData: function(pid) {
 				this.loadMore = 'loading'
 				uni.request({
 					url: this.$serverUrl + '/v1/wx/image/bed',
 					method: 'POST',
-					data: {},
+					data: {pid:pid},
 					success: (ret) => {
+						this.list = ret.data.code === 200 ? ret.data.item : []
 						this.loadMore = 'noMore'
-						this.data = ret.data.code === 200 ? ret.data.item : []
 					},
 					fail: () => {
 						uni.showModal({
@@ -61,14 +60,14 @@
 			 * @param {Object} type
 			 */
 			goBack: function(item) {
-				item.children.length > 0 ? this.getSeond(item) : this.goList(item)
+				item.pid === 0 ? this.getSeond(item) : this.goList(item)
 			},
 			/**
 			 * todo:获取子集
 			 * @param {Object} item
 			 */
 			getSeond: function(item) {
-				this.data = item.children;
+				this.getData(item.id)
 			},
 			/**
 			 * todo:页面跳转

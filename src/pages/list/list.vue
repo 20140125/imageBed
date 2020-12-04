@@ -36,10 +36,12 @@
 			this.id = data.id
 			uni.setNavigationBarTitle({title: '专题-' + data.name})
 			this.getData(this.id)
+			// #ifdef MP-WEIXIN
 			wx.showShareMenu({
 				withShareTicket: true,
 				menus: ['shareAppMessage', 'shareTimeline']
 			})
+			// #endif
 		},
 		onReachBottom() {
 			this.getData(this.id);
@@ -90,8 +92,8 @@
 							uni.stopPullDownRefresh()
 							this.fetch.total = ret.data.item.total
 							this.list = this.list.concat(ret.data.item.data);
+							this.loadMore = 'noMore'
 						} else {
-							uni.navigateTo({url: '../new/new'})
 							uni.showToast({title: 'Please Login', icon: 'success'})
 							uni.clearStorage()
 							this.loadMore = 'noMore'

@@ -1,9 +1,9 @@
 <template>
 	<view class="index" style="background: #FFFFFF;"> 
-		<view class="grid" v-show="!isCanUse">
+		<view class="grid">
 			<view class="grid-c-06" v-for="(item, index) in list" :key="index">
 				<view class="panel" @click="goDetail(item)">
-					<image class="card-img card-list2-img" :src="item.href"></image>
+					<image class="card-img card-list2-img" :src="item.href || ''"></image>
 					<text class="card-num-view card-list2-num-view">{{item.width || 0}}P</text>
 					<view class="card-bottm row">
 						<view class="car-title-view row">
@@ -13,19 +13,7 @@
 				</view>
 			</view>
 		</view>
-		<uni-load-more v-show="!isCanUse"  :status="loadMore"></uni-load-more>
-		<view class="grid" v-show="isCanUse">
-			<view class="grid-c-12">
-				<view class="panel">
-					<open-data type="userAvatarUrl" style="width: 120upx;height: 120upx;margin-left: 40%;margin-bottom: 50upx;"></open-data>
-					<view style="margin-left: 30upx;margin-bottom: 40upx;">申请获取以下权限</view>
-					<text style="margin-left: 30upx;margin-bottom: 100upx;color: #9e9e9e;">获得你的公开信息(昵称，头像、地区等)</text>
-					<button class="button" type='primary' style="border-radius: 50upx;vertical-align:middle;" open-type="getUserInfo" @getuserinfo="loginSystem">
-						授权登录
-					</button>
-				</view>
-			</view>
-		</view>
+		<uni-load-more  :status="loadMore"></uni-load-more>
 	</view>
 </template>
 
@@ -46,32 +34,25 @@
 		},
 		components: {uniLoadMore},
 		onLoad() {
+			// #ifdef MP-WEIXIN
 			wx.showShareMenu({
 				withShareTicket: true,
 				menus: ['shareAppMessage', 'shareTimeline'],
 			})
+			// #endif
+			this.id = this.numArr[(Math.random() * 7 | 0) + 1]
 		},
 		onShow() {
-			uni.getStorage({
-				key:'token',
-				success:()=>{
-					this.isCanUse = false
-					this.getData(this.id)
-				},
-				fail: () => {
-					this.isCanUse = true
-				}
-			})
 			this.id = this.numArr[(Math.random() * 7 | 0) + 1]
-			setInterval(() => {
-				this.shuffle()
-			}, Math.random() * 600000 | 0)
+			this.getData(this.id)
 		},
 		onReachBottom() {
-			!this.isCanUse ? this.getData(this.id) : console.log('请登录');
+			this.getData(this.id)
 		},
 		onPullDownRefresh() {
-			!this.isCanUse ? this.getData(this.id) : console.log('请登录');
+			this.lits = []
+			this.id = this.numArr[(Math.random() * 7 | 0) + 1]
+			this.getData(this.id)
 		},
 		methods: {
 			/**
@@ -110,81 +91,12 @@
 				});
 			},
 			/**
-			 * todo:数据保存
-			 * @param {Object} key
-			 * @param {Object} value
-			 */
-			setStorage:function (key,value) {
-				try {
-				    uni.setStorageSync(key, value)
-				} catch (e) {
-				    console.log(e)
-				}
-			},
-			/**
-			 * todo:登录系统
-			 */
-			loginSystem:function() {
-				uni.login({
-					provider: 'weixin',
-					success:  (loginRes) => {
-						console.log(loginRes)
-						uni.request({
-							url: this.$serverUrl + '/v1/wx/openid',
-							method: 'POST',
-							data: {code: loginRes.code},
-							success: (ret) => {
-								if (ret.data.code === 200) {
-									console.log(ret.data)
-									uni.getUserInfo({
-										provider: 'weixin',
-										success: (infoRes) => {
-											this.userInfo = infoRes.userInfo
-											this.userInfo.code2Session = ret.data.item
-											console.log(this.userInfo.code2Session)
-											uni.request({
-												url: this.$serverUrl + '/v1/wx/login',
-												method: 'POST',
-												data: this.userInfo,
-												success: (login) => {
-													if (login.data.code === 200) {
-														this.userInfo = login.data.item
-														this.setStorage('token',login.data.item.remember_token)
-														this.isCanUse = false
-														this.getData(this.id)
-														console.log(login)
-													}
-												},
-											})
-										}
-									})
-								}
-							},
-							fail: () => {
-								uni.showModal({
-									content: '请求失败，请重试!',
-									showCancel: false
-								})
-							}
-						})
-					}
-				});
-			},
-			/**
 			 * todo:图片详情
 			 * @param {Object} e
 			 */
 			goDetail: function(e) {
 				uni.navigateTo({
 					url: '../detail/detail?data=' + encodeURIComponent(JSON.stringify(e))
-				})
-			},
-			/**
-			 * todo:数据排序
-			 */
-			shuffle: function () {
-				this.list.sort(function () {
-					return Math.random() - 0.5
 				})
 			}
 		}
