@@ -72,7 +72,7 @@
             "path" : "pages/hot/hot",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "魔盒逗图-热搜榜",
+                "navigationBarTitleText": "魔盒逗图-热搜",
                 "enablePullDownRefresh": false
             }
             

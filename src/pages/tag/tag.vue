@@ -1,6 +1,6 @@
 <template>
 	<view class="index">
-		<view class="grid grid-c-12" style="margin-top: 60upx;">
+		<view class="grid grid-c-12" style="margin-top: 70upx;">
 			<uni-list class="grid-c-12">
 				 <uni-list-item v-for="(item, index) in list":key="item.id":clickable='true' :title="item.name" @click="goBack(item)">
 					<view slot="footer" style="right: 10upx;">

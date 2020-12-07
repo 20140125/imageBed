@@ -1,7 +1,7 @@
 <template>
 	<view class="index" style="background: #FFFFFF;"> 
 		<view class="grid">
-			<view class="grid-c-06" v-for="(item, index) in list" :key="index">
+			<view class="grid-c-06" v-for="(item, index) in list" :key="index" v-if="item.href">
 				<view class="panel" @click="goDetail(item)">
 					<image class="card-img card-list2-img" :src="item.href || ''"></image>
 					<text class="card-num-view card-list2-num-view">{{item.width || ''}}{{item.width ? 'P' : ''}}</text>
@@ -22,14 +22,10 @@
 	export default {
 		data() {
 			return {
-				providerList: [],
 				list: [],
 				fetch: {pageNum: 0, pageLimit: 10, total: 1},
-				numArr: [2, 3, 4, 5, 6, 7, 8],
 				id: 0,
 				loadMore: 'more',
-				userInfo:{},
-				isCanUse: true
 			}
 		},
 		components: {uniLoadMore},
@@ -40,26 +36,22 @@
 				menus: ['shareAppMessage', 'shareTimeline'],
 			})
 			// #endif
-			this.id = this.numArr[(Math.random() * 7 | 0) + 1]
 		},
 		onShow() {
-			this.id = this.numArr[(Math.random() * 7 | 0) + 1]
-			this.getData(this.id)
+			this.getData()
 		},
 		onReachBottom() {
-			this.getData(this.id)
+			this.getData()
 		},
 		onPullDownRefresh() {
 			this.lits = []
-			this.id = this.numArr[(Math.random() * 7 | 0) + 1]
-			this.getData(this.id)
+			this.getData()
 		},
 		methods: {
 			/**
 			 * todo:数据获取
-			 * @param {Object} id
 			 */
-			getData: function(id) {
+			getData: function() {
 				this.loadMore = 'loading'
 				this.fetch.pageNum++
 				if(this.fetch.total === this.list.length) {
@@ -67,12 +59,11 @@
 					return false
 				}
 				uni.request({
-					url: this.$serverUrl + '/v1/wx/image/bed',
+					url: this.$serverUrl + '/v1/wx/image/new',
 					method: 'POST',
 					data: {
-						page: this.fetch.pageNum,
-						limit: this.fetch.pageLimit,
-						id: id
+						page:this.fetch.pageNum,
+						limit:this.fetch.pageLimit
 					},
 					success: (ret) => {
 						if (ret.data.code === 200) {
