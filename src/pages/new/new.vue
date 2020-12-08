@@ -1,5 +1,5 @@
 <template>
-	<view class="index" style="background: #FFFFFF;"> 
+	<view class="index"> 
 		<view class="grid">
 			<view class="grid-c-06" v-for="(item, index) in list" :key="index" v-if="item.href">
 				<view class="panel" @click="goDetail(item)">
@@ -13,7 +13,7 @@
 				</view>
 			</view>
 		</view>
-		<uni-load-more  :status="loadMore"></uni-load-more>
+		<uni-load-more :status="loadMore"></uni-load-more>
 	</view>
 </template>
 
