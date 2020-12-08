@@ -33,10 +33,9 @@
 			}
 			// #endif
 			this.screenHeight = uni.getSystemInfoSync().windowHeight
-			console.log(decodeURIComponent(e.data))
 			let data = JSON.parse(decodeURIComponent(e.data))
 			console.log(data)
-			uni.setNavigationBarTitle({title: data.type_name+'-'+data.name})
+			uni.setNavigationBarTitle({title: data.name})
 			this.swpierData.push(data);
 			this.getData(data);
 		},
@@ -112,8 +111,7 @@
 			 */
 			swpierChange: function(e) {
 				this.index = e.detail.current;
-				console.log(this.swpierData[this.index]);
-				uni.setNavigationBarTitle({title: this.imageData.name+'-'+this.swpierData[this.index].name});
+				uni.setNavigationBarTitle({title: this.swpierData[this.index].name});
 			},
 			/**
 			 * todo:数据获取
@@ -132,7 +130,6 @@
 							})
 							return;
 						}
-						this.imageData = res.data.item.type
 						this.swpierData = this.swpierData.concat(res.data.item.data)
 					},
 					fail: () => {

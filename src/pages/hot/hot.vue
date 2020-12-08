@@ -46,7 +46,7 @@
 						<text class="card-num-view card-list2-num-view">{{item.width || ''}}{{item.width ? 'P' : ''}}</text>
 						<view class="card-bottm row">
 							<view class="car-title-view row">
-								<rich-text class="card-title card-list2-title" :nodes="item.name"></rich-text>
+								<rich-text class="card-title card-list2-title" :nodes="item.HighlightName"></rich-text>
 							</view>
 						</view>
 					</view>
@@ -161,7 +161,7 @@
 			 */
 			drawCorrelativeKeyword: function(keywords, keyword) {
 				keywords.map(item=>{
-					item.name = item.name.replace(keyword,'<span style="color:#409EFF">'+keyword+'</span>')
+					item.HighlightName = item.name.replace(keyword,'<span style="color:#409EFF">'+keyword+'</span>')
 				})
 				return keywords;
 			},
@@ -302,7 +302,7 @@
 							uni.stopPullDownRefresh()
 							this.fetch.total = ret.data.item.total
 							this.loadMore = this.fetch.total === 0 ? 'noMore' :  'more'
-							this.list = this.list.concat(this.drawCorrelativeKeyword(ret.data.item.data,keyword));
+							this.list = Array.from(new Set(this.list.concat(this.drawCorrelativeKeyword(ret.data.item.data,keyword))));
 						} else {
 							uni.showToast({title: 'Please Login', icon: 'success'})
 							uni.clearStorage()

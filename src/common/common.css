@@ -126,6 +126,7 @@
 .card-list2-img {
 	width: 345upx;
 	height: 517upx;
+	object-fit: contain;
 }
 
 .card-list2-num-view {

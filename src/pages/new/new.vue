@@ -69,7 +69,7 @@
 						if (ret.data.code === 200) {
 							uni.stopPullDownRefresh()
 							this.fetch.total = ret.data.item.total
-							this.list = this.list.concat(ret.data.item.data);
+							this.list = Array.from(new Set(this.list.concat(ret.data.item.data)));
 						}
 					},
 					fail: () => {
