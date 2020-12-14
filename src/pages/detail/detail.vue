@@ -16,25 +16,14 @@
 	export default {
 		data() {
 			return {
-				imgShow: false,
 				index: 0,
-				showBtn: false,
 				screenHeight: 0,
-				providerList: [],
 				swpierData: [],
-				imageData: {},
-				detailDec: ""
 			}
 		},
 		onLoad(e) {
-			// #ifdef APP-PLUS
-			if (plus.os.name === 'Android') {
-				this.showBtn = true;
-			}
-			// #endif
 			this.screenHeight = uni.getSystemInfoSync().windowHeight
 			let data = JSON.parse(decodeURIComponent(e.data))
-			console.log(data)
 			uni.setNavigationBarTitle({title: data.name})
 			this.swpierData.push(data);
 			this.getData(data);
@@ -44,7 +33,6 @@
 			 * todo:图片下载
 			 */
 			download: function() {
-				console.log(this.swpierData[this.index]);
 				uni.downloadFile({
 					url: this.swpierData[this.index].href,
 					success: (e) => {
@@ -77,33 +65,41 @@
 			 * todo:图片收藏
 			 */
 			collect: function() {
-				console.log(this.swpierData[this.index]);
-				// uni.request({
-				// 	url: this.$serverUrl + '/v1/wx/image/details',
-				// 	method: 'POST',
-				// 	data: {id: e.id, type: e.type},
-				// 	success: (res) => {
-				// 		if (res.data.code !== 200) {
-				// 			uni.showModal({
-				// 				content: '请求失败，失败原因：' + res.data.msg,
-				// 				showCancel: false
-				// 			})
-				// 			return;
-				// 		}
-				// 		this.imageData = res.data.item.type
-				// 		this.swpierData = this.swpierData.concat(res.data.item.data)
-				// 	},
-				// 	fail: () => {
-				// 		uni.showModal({
-				// 			content: '请求失败，请重试!',
-				// 			showCancel: false
-				// 		})
-				// 	}
-				// })
-				uni.showToast({
-					icon: 'none',
-					title: '点击收藏按钮'
+				uni.getStorage({
+					key:'token',
+					success:(token)=>{
+						uni.request({
+							url: this.$serverUrl + '/v1/wx/image/collect',
+							method: 'POST',
+							data: {token: token.data, post: this.swpierData[this.index],'act':1},
+							success: (res) => {
+								if (res.data.code !== 200) {
+									uni.showModal({
+										content: '请求失败，请重试!',
+										showCancel: false
+									})
+									return;
+								}
+								uni.showToast({
+									icon: 'success',
+									title: '收藏图片成功'
+								})
+							},
+							fail: () => {
+								uni.showModal({
+									content: '请求失败，请重试!',
+									showCancel: false
+								})
+							}
+						})
+					},fail:()=>{
+						uni.showToast({
+							icon: 'none',
+							title: '请先登录'
+						})
+					}
 				})
+				
 			},
 			/**
 			 * todo:图片tab切换
