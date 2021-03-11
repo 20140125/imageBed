@@ -26,7 +26,8 @@
 				fetch: {pageNum: 0, pageLimit: 10, total: 1},
 				id: 0,
 				loadMore: 'more',
-				token: ''
+				token: '',
+				source: 'app'
 			}
 		},
 		components: {uniLoadMore},
@@ -40,6 +41,7 @@
 				withShareTicket: true,
 				menus: ['shareAppMessage', 'shareTimeline']
 			})
+			this.source = 'mini_program'
 			// #endif
 		},
 		onReachBottom() {
@@ -64,10 +66,10 @@
 					key:'token',
 					success: (res) => {
 						console.log(res)
-						this.imageBed(res.data,id)
+						this.imageBed(res.data,id,this.source)
 					},
 					fail: ()=> {
-						this.imageBed('',id)
+						this.imageBed('',id,this.source)
 					}
 				})
 			},
@@ -75,8 +77,9 @@
 			 * todo：图床列表
 			 * @param {Object} token
 			 * @param {Object} id
+			 * @param {Object} source 
 			 */
-			imageBed: function(token,id) {
+			imageBed: function(token,id,source) {
 				uni.request({
 					url: this.$serverUrl + '/v1/wx/image/bed',
 					method: 'POST',
@@ -84,7 +87,8 @@
 						page: this.fetch.pageNum,
 						limit: this.fetch.pageLimit,
 						id: id,
-						token: token
+						token: token,
+						source: source
 					},
 					success: (ret) => {
 						if (ret.data.code === 200) {

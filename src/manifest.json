@@ -16,6 +16,16 @@
         "compilerVersion" : 3,
         "uniStatistics" : {
             "enable" : false
+        },
+        "distribute" : {
+            "sdkConfigs" : {
+                "ad" : {
+                    "gdt" : {},
+                    "csj" : {},
+                    "360" : {},
+                    "ks" : {}
+                }
+            }
         }
     },
     // 5+App特有相关

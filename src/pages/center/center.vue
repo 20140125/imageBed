@@ -1,12 +1,12 @@
 <template>
 	<view class="center">
-		<view class="logo">
+		<view class="logo" @click="open">
 			<button class="button" open-type="getUserInfo" @getuserinfo="loginSystem">
 				<image class="logo-img" :src="avatarUrl"></image>
 				<view class="login-title">{{!isCanUse ? '授权登录' : ''}}</view>
 			</button>
 		</view>
-		<view class="center-list">
+		<view class="center-list" @click="open">
 			<view class="center-list-item border-bottom">
 				<text class="list-icon">&#xe603;</text>
 				<text class="list-text">关于</text>
@@ -18,7 +18,6 @@
 				<text class="navigat-arrow">&#xe65e;</text>
 			</view>
 		</view>
-		
 		<view class="about">
 			<view class="content">
 				<text class="tip">版权申明</text>
@@ -27,10 +26,14 @@
 				<view class="desc">如有侵犯您权利的资源，请联系我们处理。</view>
 			</view>
 		</view>
+		<uni-popup ref="popup" type="center">
+			<image src="../../static/wx_program.jpg" style="display: fix;justify-content: center;object-fit: cover;"></image>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
+	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	export default {
 		data() {
 			return {
@@ -38,6 +41,7 @@
 				isCanUse: false
 			}
 		},
+		components:{ uniPopup },
 		onShow(){
 			uni.getStorage({
 				key:'token',
@@ -59,6 +63,11 @@
 			})
 		},
 		methods: {
+			open: function() {
+				// #ifdef APP-PLUS
+				this.$refs.popup.open()
+				// #endif
+			},
 			/**
 			 * todo:数据保存
 			 * @param {Object} key
