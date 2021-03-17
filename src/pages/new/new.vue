@@ -26,6 +26,7 @@
 				fetch: {pageNum: 0, pageLimit: 10, total: 1},
 				id: 0,
 				loadMore: 'more',
+				source: 'app'
 			}
 		},
 		components: {uniLoadMore},
@@ -35,6 +36,7 @@
 				withShareTicket: true,
 				menus: ['shareAppMessage', 'shareTimeline'],
 			})
+			this.source = 'mini_program'
 			// #endif
 		},
 		onShow() {
@@ -62,8 +64,9 @@
 					url: this.$serverUrl + '/v1/wx/image/new',
 					method: 'POST',
 					data: {
-						page:this.fetch.pageNum,
-						limit:this.fetch.pageLimit
+						page: this.fetch.pageNum,
+						limit: this.fetch.pageLimit,
+						source: this.source
 					},
 					success: (ret) => {
 						if (ret.data.code === 200) {

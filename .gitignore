@@ -2,6 +2,7 @@
 node_modules/
 unpackage/
 dist/
+src/manifest.json
 
 # local env files
 .env.local

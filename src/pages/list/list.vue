@@ -66,10 +66,10 @@
 					key:'token',
 					success: (res) => {
 						console.log(res)
-						this.imageBed(res.data,id,this.source)
+						this.imageBed(res.data, id, this.source)
 					},
 					fail: ()=> {
-						this.imageBed('',id,this.source)
+						this.imageBed('', id, this.source)
 					}
 				})
 			},
