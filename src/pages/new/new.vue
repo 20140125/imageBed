@@ -61,7 +61,7 @@
 					return false
 				}
 				uni.request({
-					url: this.$serverUrl + '/v1/wx/image/new',
+					url: this.$serverUrl + '/v1/image/newLists',
 					method: 'POST',
 					data: {
 						page: this.fetch.pageNum,
@@ -69,14 +69,11 @@
 						source: this.source
 					},
 					success: (ret) => {
-						if (ret.data.code === 200) {
-							uni.stopPullDownRefresh()
-							this.fetch.total = ret.data.item.total
-							this.list = Array.from(new Set(this.list.concat(ret.data.item.data)));
-						}
+						uni.stopPullDownRefresh()
+						this.fetch.total = ret.data.item.lists.total
+						this.list = Array.from(new Set(this.list.concat(ret.data.item.lists.data)));
 					},
 					fail: () => {
-						this.isCanUse = true
 						uni.showModal({
 							content: '请求失败，请重试!',
 							showCancel: false

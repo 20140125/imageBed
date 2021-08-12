@@ -124,11 +124,11 @@
 			 */
 			loadHotKeyword: function() {
 				uni.request({
-					url: this.$serverUrl + '/v1/wx/image/keyword',
+					url: this.$serverUrl + '/v1/image/hotKeyWord',
 					method:'POST',
 					data:{},
 					success: (res) => {
-						this.hotKeywordList = res.data.item;
+						this.hotKeywordList = res.data.item.lists;
 					}
 				});
 			},
@@ -298,7 +298,7 @@
 			 */
 			imageBed: function(token,keyword,source) {
 				uni.request({
-					url: this.$serverUrl + '/v1/wx/image/new',
+					url: this.$serverUrl + '/v1/image/hotLists',
 					method: 'POST',
 					data: {
 						page: this.fetch.pageNum,
@@ -310,9 +310,9 @@
 					success: (ret) => {
 						if (ret.data.code === 200) {
 							uni.stopPullDownRefresh()
-							this.fetch.total = ret.data.item.total
+							this.fetch.total = ret.data.item.lists.total
 							this.loadMore = this.fetch.total === 0 ? 'noMore' :  'more'
-							this.list = Array.from(new Set(this.list.concat(this.drawCorrelativeKeyword(ret.data.item.data,keyword))));
+							this.list = Array.from(new Set(this.list.concat(this.drawCorrelativeKeyword(ret.data.item.lists.data,keyword))));
 						} else {
 							uni.showToast({title: 'Please Login', icon: 'success'})
 							uni.clearStorage()

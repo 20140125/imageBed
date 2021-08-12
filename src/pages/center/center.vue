@@ -1,7 +1,7 @@
 <template>
 	<view class="center">
 		<view class="logo" @click="open">
-			<button class="button" open-type="getUserInfo" @getuserinfo="loginSystem">
+			<button class="button"  @click="loginSystem">
 				<image class="logo-img" :src="avatarUrl"></image>
 				<view class="login-title">{{!isCanUse ? '授权登录' : ''}}</view>
 			</button>
@@ -9,7 +9,7 @@
 		<view class="center-list" @click="open">
 			<view class="center-list-item border-bottom">
 				<text class="list-icon">&#xe603;</text>
-				<text class="list-text">关于</text>
+				<text class="list-text">我的收藏</text>
 				<text class="navigat-arrow">&#xe65e;</text>
 			</view>
 			<view class="center-list-item">
@@ -63,7 +63,7 @@
 			})
 		},
 		methods: {
-			open: function() {
+			open() {
 				// #ifdef APP-PLUS
 				this.$refs.popup.open()
 				// #endif
@@ -73,7 +73,7 @@
 			 * @param {Object} key
 			 * @param {Object} value
 			 */
-			setStorage:function (key,value) {
+			setStorage (key,value) {
 				try {
 					uni.setStorageSync(key, value)
 				} catch (e) {
@@ -83,42 +83,38 @@
 			/**
 			 * todo:登录系统
 			 */
-			loginSystem:function() {
+			loginSystem() {
 				uni.login({
 					provider: 'weixin',
 					success:  (loginRes) => {
-						console.log(loginRes)
 						uni.request({
-							url: this.$serverUrl + '/v1/wx/openid',
+							url: this.$serverUrl + '/v1/mini_program/openid',
 							method: 'POST',
 							data: {code: loginRes.code},
 							success: (ret) => {
-								if (ret.data.code === 200) {
-									console.log(ret.data)
-									uni.getUserInfo({
-										provider: 'weixin',
-										success: (infoRes) => {
-											this.userInfo = infoRes.userInfo
-											this.userInfo.code2Session = ret.data.item
-											console.log(this.userInfo.code2Session)
-											uni.request({
-												url: this.$serverUrl + '/v1/wx/login',
-												method: 'POST',
-												data: this.userInfo,
-												success: (login) => {
-													if (login.data.code === 200) {
-														this.userInfo = login.data.item
-														this.setStorage('token',login.data.item.remember_token)
-														this.avatarUrl = login.data.item.avatar_url
-														this.setStorage('image',login.data.item.avatar_url)
-														this.isCanUse = true
-														console.log(login)
-													}
-												},
-											})
-										}
-									})
-								}
+								console.log(ret.data)
+								uni.getUserProfile({
+									desc: '获取用户信息',
+									success: (infoRes) => {
+										console.log(infoRes)
+										this.userInfo = infoRes.userInfo
+										this.userInfo.code2Session = ret.data.item.lists
+										console.log(this.userInfo.code2Session)
+										uni.request({
+											url: this.$serverUrl + '/v1/mini_program/login',
+											method: 'POST',
+											data: this.userInfo,
+											success: (login) => {
+												this.userInfo = login.data.item.lists
+												this.setStorage('token',login.data.item.lists.remember_token)
+												this.avatarUrl = login.data.item.lists.avatar_url
+												this.setStorage('image',login.data.item.lists.avatar_url)
+												this.isCanUse = true
+												console.log(login)
+											},
+										})
+									}
+								})
 							},
 							fail: () => {
 								uni.showModal({

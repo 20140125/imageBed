@@ -31,13 +31,6 @@
 			}
 		},
 		{
-			"path": "pages/tag/tag",
-			"style": {
-				"navigationBarTitleText": "魔盒逗图-分类",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
 			"path": "pages/list/list",
 			"style": {
 				"navigationBarTitleText": "专题",
@@ -100,12 +93,6 @@
 				"iconPath": "static/hot-0.png",
 				"selectedIconPath": "static/hot-1.png",
 				"text": "热门"
-			},
-			{
-				"pagePath": "pages/tag/tag",
-				"iconPath": "static/tag-0.png",
-				"selectedIconPath": "static/tag-1.png",
-				"text": "分类"
 			},
 			{
 				"pagePath": "pages/center/center",

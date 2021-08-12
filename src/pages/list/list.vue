@@ -81,7 +81,7 @@
 			 */
 			imageBed: function(token,id,source) {
 				uni.request({
-					url: this.$serverUrl + '/v1/wx/image/bed',
+					url: this.$serverUrl + '/v1/image/lists',
 					method: 'POST',
 					data: {
 						page: this.fetch.pageNum,
@@ -91,10 +91,10 @@
 						source: source
 					},
 					success: (ret) => {
-						if (ret.data.code === 200) {
+						if (ret.data.item.code === 20000) {
 							uni.stopPullDownRefresh()
-							this.fetch.total = ret.data.item.total
-							this.list = this.list.concat(ret.data.item.data);
+							this.fetch.total = ret.data.item.lists.total
+							this.list = this.list.concat(ret.data.item.lists.data);
 							this.loadMore = 'noMore'
 						} else {
 							uni.showToast({title: 'Please Login', icon: 'success'})

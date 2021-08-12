@@ -68,38 +68,45 @@
 				uni.getStorage({
 					key:'token',
 					success:(token)=>{
-						uni.request({
-							url: this.$serverUrl + '/v1/wx/image/collect',
-							method: 'POST',
-							data: {token: token.data, post: this.swpierData[this.index],'act':1},
-							success: (res) => {
-								if (res.data.code !== 200) {
-									uni.showModal({
-										content: '请求失败，请重试!',
-										showCancel: false
-									})
-									return;
-								}
-								uni.showToast({
-									icon: 'success',
-									title: '收藏图片成功'
-								})
-							},
-							fail: () => {
-								uni.showModal({
-									content: '请求失败，请重试!',
-									showCancel: false
-								})
-							}
-						})
+						this.setCollect(token)
 					},fail:()=>{
 						uni.showToast({
 							icon: 'none',
-							title: '请先登录'
+							title: 'Please Login'
 						})
 					}
 				})
 				
+			},
+			/**
+			 * todo:设置收藏
+			 * @param {Object} token
+			 */
+			setCollect: function(token) {
+				uni.request({
+					url: this.$serverUrl + '/v1/wx/image/collect',
+					method: 'POST',
+					data: {token: token.data, post: this.swpierData[this.index],'act':1},
+					success: (res) => {
+						if (res.data.code !== 200) {
+							uni.showModal({
+								content: '请求失败，请重试!',
+								showCancel: false
+							})
+							return;
+						}
+						uni.showToast({
+							icon: 'success',
+							title: '收藏图片成功'
+						})
+					},
+					fail: () => {
+						uni.showModal({
+							content: '请求失败，请重试!',
+							showCancel: false
+						})
+					}
+				})
 			},
 			/**
 			 * todo:图片tab切换
@@ -115,9 +122,9 @@
 			 */
 			getData: function(e) {
 				uni.request({
-					url: this.$serverUrl + '/v1/wx/image/details',
+					url: this.$serverUrl + '/v1/image/lists',
 					method: 'POST',
-					data: {id: e.id, type: e.type},
+					data: { id: e.type, page: 1, limit: 100, source: 'mini_program' },
 					success: (res) => {
 						if (res.data.code !== 200) {
 							uni.showModal({
@@ -126,7 +133,7 @@
 							})
 							return;
 						}
-						this.swpierData = this.swpierData.concat(res.data.item.data)
+						this.swpierData = this.swpierData.concat(res.data.item.lists.data)
 					},
 					fail: () => {
 						uni.showModal({
