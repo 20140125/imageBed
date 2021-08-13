@@ -97,7 +97,7 @@
 							this.list = this.list.concat(ret.data.item.lists.data);
 							this.loadMore = 'noMore'
 						} else {
-							uni.showToast({title: 'Please Login', icon: 'success'})
+							uni.showToast({ title: 'Please Login', icon: 'success' })
 							uni.clearStorage()
 							this.loadMore = 'noMore'
 						}

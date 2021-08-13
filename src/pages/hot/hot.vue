@@ -103,14 +103,22 @@
 			this.getData(this.keyword);
 		},
 		methods: {
-			init: function() {
+			init() {
 				this.loadOldKeyword();
-				this.loadHotKeyword();
+				uni.getStorage({
+					key:'token',
+					success: (res) => {
+						this.loadHotKeyword(res.data);
+					},
+					fail: ()=> {
+						this.loadHotKeyword();
+					}
+				})
 			},
 			/**
 			 * todo:加载历史搜索,自动读取本地Storage
 			 */
-			loadOldKeyword: function() {
+			loadOldKeyword() {
 				uni.getStorage({
 					key: 'OldKeys',
 					success: (res) => {
@@ -121,12 +129,13 @@
 			},
 			/**
 			 * todo:加载热门搜索
+			 * @param token  
 			 */
-			loadHotKeyword: function() {
+			loadHotKeyword(token = '') {
 				uni.request({
 					url: this.$serverUrl + '/v1/image/hotKeyWord',
 					method:'POST',
-					data:{},
+					data:{ token: token },
 					success: (res) => {
 						this.hotKeywordList = res.data.item.lists;
 					}
@@ -136,7 +145,7 @@
 			 * todo：获取字节长度
 			 * @param {Object} str
 			 */
-			getStrLength:function(str){
+			getStrLength(str){
 				let len = 0;
 				for (let i=0; i<str.length; i++) {
 					let c = str.charCodeAt(i);
@@ -153,7 +162,7 @@
 			 * todo:监听输入
 			 * @param {Object} event
 			 */
-			inputChange: function(event) {
+			inputChange(event) {
 				var keyword = event.detail ? event.detail.value : ''
 				if (!keyword) {
 					this.showSearchBox = true
@@ -167,7 +176,7 @@
 			 * @param {Object} keywords
 			 * @param {Object} keyword
 			 */
-			drawCorrelativeKeyword: function(keywords, keyword) {
+			drawCorrelativeKeyword(keywords, keyword) {
 				keywords.map(item=>{
 					item.HighlightName = item.name.replace(keyword,'<span style="color:#409EFF">'+keyword+'</span>')
 				})
@@ -177,13 +186,13 @@
 			 * todo:顶置关键字
 			 * @param {Object} item
 			 */
-			setKeyword: function(item) {
+			setKeyword(item) {
 				this.keyword = item.name;
 			},
 			/**
 			 * 清除历史搜索
 			 */
-			oldDelete: function() {
+			oldDelete() {
 				uni.showModal({
 					content: '确定清除历史搜索记录？',
 					success: (res) => {
@@ -202,14 +211,14 @@
 			/**
 			 * todo:热门搜索开关
 			 */
-			hotToggle: function() {
+			hotToggle() {
 				this.forbid = this.forbid ? '' : '_forbid';
 			},
 			/**
 			 * todo:执行搜索
 			 * @param {Object} keyword
 			 */
-			doSearch: function(item) {
+			doSearch(item) {
 				this.keyword = item.name ? item.name : item
 				if(!this.keyword || this.keyword === '') {
 					uni.showToast({
@@ -239,7 +248,7 @@
 			 * todo:保存关键字到历史记录
 			 * @param {Object} keyword
 			 */
-			saveKeyword: function(keyword) {
+			saveKeyword(keyword) {
 				uni.getStorage({
 					key: 'OldKeys',
 					success: (res) => {
@@ -273,7 +282,7 @@
 			 * todo:数据获取
 			 * @param {Object} id
 			 */
-			getData: function(keyword) {
+			getData(keyword) {
 				this.loadMore = 'loading'
 				if(this.fetch.total === this.list.length) {
 					this.loadMore = 'noMore'
@@ -282,7 +291,6 @@
 				uni.getStorage({
 					key:'token',
 					success: (res) => {
-						console.log(res)
 						this.imageBed(res.data, keyword, this.source)
 					},
 					fail: ()=> {
@@ -296,7 +304,7 @@
 			 * @param {Object} id
 			 * @param {Object} source 
 			 */
-			imageBed: function(token,keyword,source) {
+			imageBed(token,keyword,source) {
 				uni.request({
 					url: this.$serverUrl + '/v1/image/hotLists',
 					method: 'POST',
@@ -308,13 +316,13 @@
 						source: source
 					},
 					success: (ret) => {
-						if (ret.data.code === 200) {
+						if (ret.data.item.code === 20000) {
 							uni.stopPullDownRefresh()
 							this.fetch.total = ret.data.item.lists.total
 							this.loadMore = this.fetch.total === 0 ? 'noMore' :  'more'
 							this.list = Array.from(new Set(this.list.concat(this.drawCorrelativeKeyword(ret.data.item.lists.data,keyword))));
 						} else {
-							uni.showToast({title: 'Please Login', icon: 'success'})
+							uni.showToast({ title: 'Please Login', icon: 'success' })
 							uni.clearStorage()
 							this.loadMore = 'noMore'
 						}
@@ -331,7 +339,7 @@
 			 * todo:图片详情
 			 * @param {Object} e
 			 */
-			goDetail: function(e) {
+			goDetail(e) {
 				e.img_num = this.fetch.total
 				uni.navigateTo({
 					url: '../detail/detail?data=' + encodeURIComponent(JSON.stringify(e))

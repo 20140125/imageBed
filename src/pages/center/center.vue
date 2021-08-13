@@ -94,7 +94,7 @@
 							success: (ret) => {
 								console.log(ret.data)
 								uni.getUserProfile({
-									desc: '获取用户信息',
+									desc: '用于完善会员资料',
 									success: (infoRes) => {
 										console.log(infoRes)
 										this.userInfo = infoRes.userInfo

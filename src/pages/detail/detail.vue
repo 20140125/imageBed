@@ -26,7 +26,17 @@
 			let data = JSON.parse(decodeURIComponent(e.data))
 			uni.setNavigationBarTitle({title: data.name})
 			this.swpierData.push(data);
-			this.getData(data);
+			uni.getStorage({
+				key:'token',
+				success:(res)=>{
+					this.getData(data, res.data)
+				},fail:()=>{
+					uni.showToast({
+						icon: 'none',
+						title: 'Please Login'
+					})
+				}
+			})
 		},
 		methods: {
 			/**
@@ -67,8 +77,8 @@
 			collect: function() {
 				uni.getStorage({
 					key:'token',
-					success:(token)=>{
-						this.setCollect(token)
+					success:(res)=>{
+						this.setCollect(res.data)
 					},fail:()=>{
 						uni.showToast({
 							icon: 'none',
@@ -82,11 +92,11 @@
 			 * todo:设置收藏
 			 * @param {Object} token
 			 */
-			setCollect: function(token) {
+			setCollect: function(token = '') {
 				uni.request({
 					url: this.$serverUrl + '/v1/wx/image/collect',
 					method: 'POST',
-					data: {token: token.data, post: this.swpierData[this.index],'act':1},
+					data: { token: token.data, post: this.swpierData[this.index],'act':1 },
 					success: (res) => {
 						if (res.data.code !== 200) {
 							uni.showModal({
@@ -120,11 +130,11 @@
 			 * todo:数据获取
 			 * @param {Object} e
 			 */
-			getData: function(e) {
+			getData: function(e, token = '') {
 				uni.request({
 					url: this.$serverUrl + '/v1/image/lists',
 					method: 'POST',
-					data: { id: e.type, page: 1, limit: 100, source: 'mini_program' },
+					data: { id: e.type, page: 1, limit: 30, source: 'mini_program', token: token },
 					success: (res) => {
 						if (res.data.code !== 200) {
 							uni.showModal({

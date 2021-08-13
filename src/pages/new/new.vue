@@ -40,20 +40,45 @@
 			// #endif
 		},
 		onShow() {
-			this.getData()
+			uni.getStorage({
+				key:'token',
+				success: (res) => {
+					this.getData(res.data)
+				},
+				fail: ()=> {
+					this.getData()
+				}
+			})
 		},
 		onReachBottom() {
-			this.getData()
+			uni.getStorage({
+				key:'token',
+				success: (res) => {
+					this.getData(res.data)
+				},
+				fail: ()=> {
+					this.getData()
+				}
+			})
 		},
 		onPullDownRefresh() {
 			this.lits = []
-			this.getData()
+			this.fetch = { pageNum: 1, pageLimit: 10 }
+			uni.getStorage({
+				key:'token',
+				success: (res) => {
+					this.getData(res.data)
+				},
+				fail: ()=> {
+					this.getData()
+				}
+			})
 		},
 		methods: {
 			/**
 			 * todo:数据获取
 			 */
-			getData: function() {
+			getData: function(token = '') {
 				this.loadMore = 'loading'
 				this.fetch.pageNum++
 				if(this.fetch.total === this.list.length) {
@@ -66,12 +91,18 @@
 					data: {
 						page: this.fetch.pageNum,
 						limit: this.fetch.pageLimit,
-						source: this.source
+						source: this.source,
+						token: token
 					},
 					success: (ret) => {
-						uni.stopPullDownRefresh()
-						this.fetch.total = ret.data.item.lists.total
-						this.list = Array.from(new Set(this.list.concat(ret.data.item.lists.data)));
+						if (ret.data.item.code === 20000) {
+							uni.stopPullDownRefresh()
+							this.fetch.total = ret.data.item.lists.total
+							this.list = Array.from(new Set(this.list.concat(ret.data.item.lists.data)));
+						} else {
+							uni.showToast({ title: 'Please Login', icon: 'success' })
+							this.loadMore = 'noMore'
+						}
 					},
 					fail: () => {
 						uni.showModal({
