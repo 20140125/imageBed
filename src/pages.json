@@ -29,28 +29,6 @@
 					}
 				}
 			}
-		},
-		{
-			"path": "pages/list/list",
-			"style": {
-				"navigationBarTitleText": "专题",
-				"enablePullDownRefresh": true
-			},
-			"app-plus": {
-				"bounce": "none",
-				"titleNView": {
-					"buttons": [{
-						"type": "share"
-					}]
-				}
-			},
-			"h5": {
-				"titleNView": {
-					"buttons": [{
-						"type": "favorite"
-					}]
-				}
-			}
 		}
 	    ,{
             "path" : "pages/center/center",

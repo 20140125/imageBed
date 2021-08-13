@@ -103,6 +103,18 @@
 			this.getData(this.keyword);
 		},
 		methods: {
+			/**
+			 * todo:数据保存
+			 * @param {Object} key
+			 * @param {Object} value
+			 */
+			setStorage (key,value) {
+				try {
+					uni.setStorageSync(key, value)
+				} catch (e) {
+					console.log(e)
+				}
+			},
 			init() {
 				this.loadOldKeyword();
 				uni.getStorage({
@@ -322,8 +334,18 @@
 							this.loadMore = this.fetch.total === 0 ? 'noMore' :  'more'
 							this.list = Array.from(new Set(this.list.concat(this.drawCorrelativeKeyword(ret.data.item.lists.data,keyword))));
 						} else {
-							uni.showToast({ title: 'Please Login', icon: 'success' })
 							uni.clearStorage()
+							uni.showModal({
+							    title: '提示',
+							    content: '授权登录',
+							    success: (res) => {
+							        if (res.confirm) {
+							            this.loginSystem()
+							        } else if (res.cancel) {
+							           uni.showToast({ title: 'Please Login', icon: 'success' })
+							        }
+							    }
+							})
 							this.loadMore = 'noMore'
 						}
 					},
@@ -343,6 +365,57 @@
 				e.img_num = this.fetch.total
 				uni.navigateTo({
 					url: '../detail/detail?data=' + encodeURIComponent(JSON.stringify(e))
+				})
+			},
+			/**
+			 * todo:授权登录
+			 */
+			loginSystem() {
+				uni.getUserProfile({
+					desc: '用于完善会员资料',
+					provider: 'weixin',
+					success: (infoRes) => {
+						console.log(infoRes)
+						this.userInfo = infoRes.userInfo
+						uni.login({
+							provider: 'weixin',
+							success:  (loginRes) => {
+								uni.request({
+									url: this.$serverUrl + '/v1/mini_program/openid',
+									method: 'POST',
+									data: {code: loginRes.code},
+									success: (ret) => {
+										this.userInfo.code2Session = ret.data.item.lists
+										uni.request({
+											url: this.$serverUrl + '/v1/mini_program/login',
+											method: 'POST',
+											data: this.userInfo,
+											success: (login) => {
+												this.userInfo = login.data.item.lists
+												this.setStorage('token',login.data.item.lists.remember_token)
+												this.avatarUrl = login.data.item.lists.avatar_url
+												this.setStorage('image',login.data.item.lists.avatar_url)
+												this.isCanUse = true
+												console.log(login)
+											},
+										})
+									},
+									fail: () => {
+										uni.showModal({
+											content: '请求失败，请重试!',
+											showCancel: false
+										})
+									}
+								})
+							},
+							fail: () => {
+								uni.showModal({
+									content: '请求失败，请重试!',
+									showCancel: false
+								})
+							}
+						})
+					}
 				})
 			},
 		}

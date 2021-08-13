@@ -84,22 +84,21 @@
 			 * todo:登录系统
 			 */
 			loginSystem() {
-				uni.login({
+				uni.getUserProfile({
+					desc: '用于完善会员资料',
 					provider: 'weixin',
-					success:  (loginRes) => {
-						uni.request({
-							url: this.$serverUrl + '/v1/mini_program/openid',
-							method: 'POST',
-							data: {code: loginRes.code},
-							success: (ret) => {
-								console.log(ret.data)
-								uni.getUserProfile({
-									desc: '用于完善会员资料',
-									success: (infoRes) => {
-										console.log(infoRes)
-										this.userInfo = infoRes.userInfo
+					success: (infoRes) => {
+						console.log(infoRes)
+						this.userInfo = infoRes.userInfo
+						uni.login({
+							provider: 'weixin',
+							success:  (loginRes) => {
+								uni.request({
+									url: this.$serverUrl + '/v1/mini_program/openid',
+									method: 'POST',
+									data: {code: loginRes.code},
+									success: (ret) => {
 										this.userInfo.code2Session = ret.data.item.lists
-										console.log(this.userInfo.code2Session)
 										uni.request({
 											url: this.$serverUrl + '/v1/mini_program/login',
 											method: 'POST',
@@ -113,6 +112,12 @@
 												console.log(login)
 											},
 										})
+									},
+									fail: () => {
+										uni.showModal({
+											content: '请求失败，请重试!',
+											showCancel: false
+										})
 									}
 								})
 							},
@@ -124,8 +129,8 @@
 							}
 						})
 					}
-				});
-			},
+				})
+			}
 		}
 	}
 </script>
