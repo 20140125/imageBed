@@ -42,7 +42,7 @@
 			<view class="grid">
 				<view class="grid-c-06" v-for="(item, index) in list" :key="index" v-if="item.href">
 					<view class="panel" @click="goDetail(item)">
-						<image class="card-img card-list2-img" :src="item.href || ''"></image>
+						<image class="card-img card-list2-img" :src="item.href || ''" @longtap="download(item.href)"></image>
 						<text class="card-num-view card-list2-num-view">{{item.width || ''}}{{item.width ? 'P' : ''}}</text>
 						<view class="card-bottm row">
 							<view class="car-title-view row">
@@ -61,6 +61,7 @@
 
 <script>
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
+	import func from '@/api/methods.js'
 	export default {
 		data() {
 			return {
@@ -96,13 +97,24 @@
 		},
 		onReachBottom() {
 			this.fetch.pageNum++
-			this.getData(this.keyword);
+			if(this.keyword && this.showImageItme) {
+				this.getData(this.keyword)
+			}
 		},
 		onPullDownRefresh() {
 			this.fetch.pageNum++
-			this.getData(this.keyword);
+			if(this.keyword && this.showImageItme) {
+				this.getData(this.keyword)
+			}
 		},
 		methods: {
+			/**
+			 * todo:图片下载
+			 * @param {String} href 
+			 */
+			download: function(href) {
+				func.downloadFile(href)
+			},
 			/**
 			 * todo:数据保存
 			 * @param {Object} key
@@ -251,7 +263,7 @@
 				});
 				this.fetch.pageNum = 1
 				this.list = []
-				uni.setNavigationBarTitle({title: '热搜-'+this.keyword})
+				uni.setNavigationBarTitle({title: '热搜 -- '+this.keyword})
 				this.showImageItme = true
 				this.showSearchBox = false
 				this.getData(this.keyword)
@@ -371,52 +383,7 @@
 			 * todo:授权登录
 			 */
 			loginSystem() {
-				uni.getUserProfile({
-					desc: '用于完善会员资料',
-					provider: 'weixin',
-					success: (infoRes) => {
-						console.log(infoRes)
-						this.userInfo = infoRes.userInfo
-						uni.login({
-							provider: 'weixin',
-							success:  (loginRes) => {
-								uni.request({
-									url: this.$serverUrl + '/v1/mini_program/openid',
-									method: 'POST',
-									data: {code: loginRes.code},
-									success: (ret) => {
-										this.userInfo.code2Session = ret.data.item.lists
-										uni.request({
-											url: this.$serverUrl + '/v1/mini_program/login',
-											method: 'POST',
-											data: this.userInfo,
-											success: (login) => {
-												this.userInfo = login.data.item.lists
-												this.setStorage('token',login.data.item.lists.remember_token)
-												this.avatarUrl = login.data.item.lists.avatar_url
-												this.setStorage('image',login.data.item.lists.avatar_url)
-												this.isCanUse = true
-												console.log(login)
-											},
-										})
-									},
-									fail: () => {
-										uni.showModal({
-											content: '请求失败，请重试!',
-											showCancel: false
-										})
-									}
-								})
-							},
-							fail: () => {
-								uni.showModal({
-									content: '请求失败，请重试!',
-									showCancel: false
-								})
-							}
-						})
-					}
-				})
+				func.loginSystem()
 			},
 		}
 	}

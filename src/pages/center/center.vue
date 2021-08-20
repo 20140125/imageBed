@@ -34,6 +34,7 @@
 
 <script>
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import func from '@/api/methods.js'
 	export default {
 		data() {
 			return {
@@ -69,21 +70,12 @@
 				// #endif
 			},
 			/**
-			 * todo:数据保存
-			 * @param {Object} key
-			 * @param {Object} value
-			 */
-			setStorage (key,value) {
-				try {
-					uni.setStorageSync(key, value)
-				} catch (e) {
-					console.log(e)
-				}
-			},
-			/**
 			 * todo:登录系统
 			 */
 			loginSystem() {
+				if (this.isCanUse) {
+					return false
+				}
 				uni.getUserProfile({
 					desc: '用于完善会员资料',
 					provider: 'weixin',
@@ -105,27 +97,21 @@
 											data: this.userInfo,
 											success: (login) => {
 												this.userInfo = login.data.item.lists
-												this.setStorage('token',login.data.item.lists.remember_token)
+												func.setStorage('token',login.data.item.lists.remember_token)
 												this.avatarUrl = login.data.item.lists.avatar_url
-												this.setStorage('image',login.data.item.lists.avatar_url)
+												func.setStorage('image',login.data.item.lists.avatar_url)
 												this.isCanUse = true
 												console.log(login)
 											},
 										})
 									},
 									fail: () => {
-										uni.showModal({
-											content: '请求失败，请重试!',
-											showCancel: false
-										})
+										uni.showModal({ content: '请求失败，请重试!', showCancel: false })
 									}
 								})
 							},
 							fail: () => {
-								uni.showModal({
-									content: '请求失败，请重试!',
-									showCancel: false
-								})
+								uni.showModal({ content: '请求失败，请重试!', showCancel: false })
 							}
 						})
 					}

@@ -3,7 +3,7 @@
 		<view class="grid">
 			<view class="grid-c-06" v-for="(item, index) in list" :key="index" v-if="item.href">
 				<view class="panel" @click="goDetail(item)">
-					<image class="card-img card-list2-img" :src="item.href || ''"></image>
+					<image class="card-img card-list2-img" :src="item.href || ''" @longtap="download(item.href)"></image>
 					<text class="card-num-view card-list2-num-view">{{item.width || ''}}{{item.width ? 'P' : ''}}</text>
 					<view class="card-bottm row">
 						<view class="car-title-view row">
@@ -19,11 +19,12 @@
 
 <script>
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
+	import func from '@/api/methods.js'
 	export default {
 		data() {
 			return {
 				list: [],
-				fetch: {pageNum: 0, pageLimit: 10, total: 1},
+				fetch: { pageNum: 0, pageLimit: 10, total: 1 },
 				id: 0,
 				loadMore: 'more',
 				source: 'app'
@@ -49,6 +50,17 @@
 					this.getData()
 				}
 			})
+			uni.getStorage({
+				key:'tips',
+				success: (res) => {
+					console.log(res.data)
+				},
+				fail: ()=> {
+					uni.showToast({ title: '长按保存图片', duration: 3000 })
+					func.setStorage('tips', true)
+				}
+			})
+			
 		},
 		onReachBottom() {
 			uni.getStorage({
@@ -76,16 +88,11 @@
 		},
 		methods: {
 			/**
-			 * todo:数据保存
-			 * @param {Object} key
-			 * @param {Object} value
+			 * todo:长按保存图片
+			 * @param {Object} href
 			 */
-			setStorage (key,value) {
-				try {
-					uni.setStorageSync(key, value)
-				} catch (e) {
-					console.log(e)
-				}
+			download(href) {
+				func.downloadFile(href)
 			},
 			/**
 			 * todo:数据获取
@@ -112,14 +119,15 @@
 							this.fetch.total = ret.data.item.lists.total
 							this.list = Array.from(new Set(this.list.concat(ret.data.item.lists.data)));
 						} else {
+							uni.clearStorage()
 							uni.showModal({
 							    title: '提示',
 							    content: '授权登录',
 							    success: (res) => {
 							        if (res.confirm) {
-							            this.loginSystem()
+										this.loginSystem()
 							        } else if (res.cancel) {
-							           uni.showToast({ title: 'Please Login', icon: 'success' })
+										uni.showToast({ title: 'Please Login', icon: 'success' })
 							        }
 							    }
 							})
@@ -127,10 +135,7 @@
 						}
 					},
 					fail: () => {
-						uni.showModal({
-							content: '请求失败，请重试!',
-							showCancel: false
-						})
+						uni.showModal({ content: '请求失败，请重试!', showCancel: false })
 					}
 				});
 			},
@@ -147,52 +152,7 @@
 			 * todo:授权登录
 			 */
 			loginSystem() {
-				uni.getUserProfile({
-					desc: '用于完善会员资料',
-					provider: 'weixin',
-					success: (infoRes) => {
-						console.log(infoRes)
-						this.userInfo = infoRes.userInfo
-						uni.login({
-							provider: 'weixin',
-							success:  (loginRes) => {
-								uni.request({
-									url: this.$serverUrl + '/v1/mini_program/openid',
-									method: 'POST',
-									data: {code: loginRes.code},
-									success: (ret) => {
-										this.userInfo.code2Session = ret.data.item.lists
-										uni.request({
-											url: this.$serverUrl + '/v1/mini_program/login',
-											method: 'POST',
-											data: this.userInfo,
-											success: (login) => {
-												this.userInfo = login.data.item.lists
-												this.setStorage('token',login.data.item.lists.remember_token)
-												this.avatarUrl = login.data.item.lists.avatar_url
-												this.setStorage('image',login.data.item.lists.avatar_url)
-												this.isCanUse = true
-												console.log(login)
-											},
-										})
-									},
-									fail: () => {
-										uni.showModal({
-											content: '请求失败，请重试!',
-											showCancel: false
-										})
-									}
-								})
-							},
-							fail: () => {
-								uni.showModal({
-									content: '请求失败，请重试!',
-									showCancel: false
-								})
-							}
-						})
-					}
-				})
+				func.loginSystem()
 			},
 		}
 	}
