@@ -1,12 +1,12 @@
 <template>
 	<view class="center">
 		<view class="logo" @click="open">
-			<button class="button"  @click="loginSystem">
+			<button class="button" @click="loginSystem">
 				<image class="logo-img" :src="avatarUrl"></image>
 				<view class="login-title">{{!isCanUse ? '授权登录' : ''}}</view>
 			</button>
 		</view>
-		<view class="center-list" @click="open">
+		<view class="center-list">
 			<view class="center-list-item border-bottom">
 				<text class="list-icon">&#xe603;</text>
 				<text class="list-text">我的收藏</text>
@@ -27,7 +27,8 @@
 			</view>
 		</view>
 		<uni-popup ref="popup" type="center">
-			<image src="../../static/wx_program.jpg" style="display: fix;justify-content: center;object-fit: cover;"></image>
+			<image src="../../static/wx_program.jpg" style="display: fix;justify-content: center;object-fit: cover;">
+			</image>
 		</uni-popup>
 	</view>
 </template>
@@ -42,11 +43,13 @@
 				isCanUse: false
 			}
 		},
-		components:{ uniPopup },
-		onShow(){
+		components: {
+			uniPopup
+		},
+		onShow() {
 			uni.getStorage({
-				key:'token',
-				success:(res)=>{
+				key: 'token',
+				success: (res) => {
 					this.isCanUse = true
 				},
 				fail: () => {
@@ -54,12 +57,12 @@
 				}
 			})
 			uni.getStorage({
-				'key':'image',
-				success:(res)=>{
+				'key': 'image',
+				success: (res) => {
 					this.avatarUrl = res.data
 				},
 				fail: () => {
-					
+
 				}
 			})
 		},
@@ -84,34 +87,42 @@
 						this.userInfo = infoRes.userInfo
 						uni.login({
 							provider: 'weixin',
-							success:  (loginRes) => {
+							success: (loginRes) => {
 								uni.request({
-									url: this.$serverUrl + '/v1/mini_program/openid',
+									url: `${this.$serverUrl}/v1/mini_program/openid`,
 									method: 'POST',
-									data: {code: loginRes.code},
+									data: {
+										code: loginRes.code
+									},
 									success: (ret) => {
 										this.userInfo.code2Session = ret.data.item.lists
 										uni.request({
-											url: this.$serverUrl + '/v1/mini_program/login',
+											url: `${this.$serverUrl}/v1/mini_program/login`,
 											method: 'POST',
 											data: this.userInfo,
 											success: (login) => {
 												this.userInfo = login.data.item.lists
-												func.setStorage('token',login.data.item.lists.remember_token)
-												this.avatarUrl = login.data.item.lists.avatar_url
-												func.setStorage('image',login.data.item.lists.avatar_url)
+												func.setStorage('token',(((login.data || {}).item || {}).lists || {}).remember_token || '')
+												this.avatarUrl = (((login.data || {}).item || {}).lists || {}).avatar_url || ''
+												func.setStorage('image',(((login.data || {}).item || {}).lists || {}).avatar_url || '')
 												this.isCanUse = true
 												console.log(login)
 											},
 										})
 									},
 									fail: () => {
-										uni.showModal({ content: '请求失败，请重试!', showCancel: false })
+										uni.showModal({
+											content: '请求失败，请重试!',
+											showCancel: false
+										})
 									}
 								})
 							},
 							fail: () => {
-								uni.showModal({ content: '请求失败，请重试!', showCancel: false })
+								uni.showModal({
+									content: '请求失败，请重试!',
+									showCancel: false
+								})
 							}
 						})
 					}
@@ -129,6 +140,7 @@
 		text-align: center;
 		background-color: #FFFFFF;
 	}
+
 	.content {
 		flex: 1;
 		padding: 30upx;
@@ -137,11 +149,13 @@
 		font-size: 30upx;
 		color: #353333;
 	}
+
 	.tip {
 		margin-top: 20upx;
 		color: #000000;
 		text-align: center;
 	}
+
 	.desc {
 		margin-top: 30upx;
 		display: block;

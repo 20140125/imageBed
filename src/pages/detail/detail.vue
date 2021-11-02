@@ -7,7 +7,6 @@
 		</swiper>
 		<view class="detail-btn-view">
 			<view class="download" @click="download"></view>
-			<!-- <view class="collect" @click="collect"></view> -->
 		</view>
 	</view>
 </template>
@@ -25,14 +24,19 @@
 		onLoad(e) {
 			this.screenHeight = uni.getSystemInfoSync().windowHeight
 			let data = JSON.parse(decodeURIComponent(e.data))
-			uni.setNavigationBarTitle({title: data.name})
+			uni.setNavigationBarTitle({
+				title: data.name
+			})
 			this.swpierData.push(data)
 			uni.getStorage({
-				key:'token',
-				success:(res)=>{
+				key: 'token',
+				success: (res) => {
 					this.getData(data, res.data)
-				},fail:()=>{
-					uni.showToast({ title: 'Please Login' })
+				},
+				fail: () => {
+					uni.showToast({
+						title: 'Please Login'
+					})
 				}
 			})
 		},
@@ -49,7 +53,9 @@
 			 */
 			swpierChange: function(e) {
 				this.index = e.detail.current
-				uni.setNavigationBarTitle({ title: this.swpierData[this.index].name })
+				uni.setNavigationBarTitle({
+					title: this.swpierData[this.index].name
+				})
 			},
 			/**
 			 * todo:数据获取
@@ -59,12 +65,25 @@
 				uni.request({
 					url: this.$serverUrl + '/v1/image/lists',
 					method: 'POST',
-					data: { id: e.type, page: 1, limit: 30, source: 'mini_program', token: token },
+					data: {
+						id: e.type,
+						page: 1,
+						limit: 30,
+						source: 'mini_program',
+						token: token
+					},
 					success: (res) => {
+						if (ret.statusCode !== 200) {
+							uni.clearStorage();
+							return false;
+						}
 						this.swpierData = this.swpierData.concat(res.data.item.lists.data)
 					},
 					fail: () => {
-						uni.showModal({ content: '请求失败，请重试!', showCancel: false })
+						uni.showModal({
+							content: '请求失败，请重试!',
+							showCancel: false
+						})
 					}
 				})
 			}
