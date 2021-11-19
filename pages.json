@@ -1,0 +1,47 @@
+{
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [{
+			"path": "pages/index",
+			"style": {
+				"navigationBarTitleText": "魔盒逗图",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/users",
+			"style": {
+				"navigationBarTitleText": "魔盒逗图-我的",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/chat",
+			"style": {
+				"navigationBarTitleText": "魔盒逗图-客服",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/search",
+			"style": {
+				"navigationBarTitleText": "魔盒逗图-热搜",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/post",
+			"style": {
+				"navigationBarTitleText": "魔盒逗图-工具",
+				"enablePullDownRefresh": false
+			}
+		}
+	],
+
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "魔盒逗图",
+		"navigationBarBackgroundColor": "#2979ff",
+		"backgroundColor": "#EFEFEF"
+	}
+}

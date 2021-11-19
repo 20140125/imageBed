@@ -1,5 +1,5 @@
 {
-  "name": "my-project",
+  "name": "magicbox",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -66,6 +66,7 @@
     "regenerator-runtime": "^0.12.1",
     "sass": "^1.32.8",
     "sass-loader": "^7.3.0",
+    "uview-ui": "^1.8.4",
     "vue": "^2.6.11",
     "vuex": "^3.6.2"
   },
