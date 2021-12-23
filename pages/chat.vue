@@ -65,7 +65,7 @@
 					const message = JSON.parse(events.data);
 					switch (message.type) {
 						case 'ping':
-							webSocketServer.send('{"type":"pong"}');
+							webSocketServer.send('{"type":"ping"}');
 							break;
 						case 'login':
 							// 用户列表
@@ -78,6 +78,7 @@
 							}
 							this.indexLists.sort();
 							this.usersLists = []
+							const online = []
 							for (let j in this.indexLists) {
 								const item = [];
 								for (let k in clientLists) {
@@ -87,6 +88,23 @@
 								}
 								this.usersLists[j] = item
 							}
+							// 数组前面追加
+							this.indexLists.unshift('↑');
+							// 获取在线用户
+							this.usersLists.forEach(item => {
+								item.forEach((user, index) => {
+									if (user.online) {
+										online.push(user);
+										item.splice(index, 1)
+									}
+								})
+							});
+							// 字母排序
+							online.sort((a, b) => {
+								return a.char > b.char ? 1 : -1;
+							})
+							// 追加在线用户
+							this.usersLists.unshift(online);
 							break;
 					}
 				});
@@ -142,33 +160,33 @@
 	}
 
 	.u-line {
-		margin-top: 10px !important;
+		margin-top: 20rpx !important;
 	}
 
 	.content {
-		margin-bottom: 10px;
-		margin-top: 10px;
+		margin-bottom: 20rpx;
+		margin-top: 20rpx;
 	}
 
 	.state {
-		margin-left: 15px;
+		margin-left: 30rpx;
 		position: absolute;
-		margin-top: 8px;
-		font-size: 10px;
+		margin-top: 16rpx;
+		font-size: 20rpx;
 	}
 
 	.username {
-		margin-left: 50px;
+		margin-left: 100rpx;
 		position: absolute;
-		margin-top: 7px;
+		margin-top: 14rpx;
 	}
 
 	.desc {
-		margin-left: 15px;
+		margin-left: 30rpx;
 		position: relative;
-		margin-top: 8px;
+		margin-top: 16rpx;
 		color: #9d9a9a;
-		font-size: 10px;
+		font-size: 20rpx;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;

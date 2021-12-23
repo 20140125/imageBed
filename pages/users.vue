@@ -73,7 +73,7 @@
 		margin-left: 40%;
 	}
 	.u-card {
-		background-color: #f8faff!important;
+		background-color: #f9f9f9 !important;
 	}
 	.u-icon {
 		margin-right: 30rpx;
