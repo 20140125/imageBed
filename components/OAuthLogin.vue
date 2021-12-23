@@ -30,8 +30,7 @@
 					item.name = item.name.toUpperCase();
 					item.icon = this.iconMap[item.name.toUpperCase()];
 				});
-				this.popup = true
-				console.log('dsfsdfsd')
+				this.popup = true;
 			},
 			/**
 			 * todo:授权登录

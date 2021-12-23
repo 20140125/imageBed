@@ -6,5 +6,6 @@ module.exports = {
 			disableHostCheck: true
 		}
 	},
+	transpileDependencies: ['uview-ui']
 	//productionSourceMap: false,
 }

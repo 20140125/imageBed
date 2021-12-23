@@ -30,7 +30,7 @@
 					{
 						iconPath: "server-fill",
 						selectedIconPath: "server-man",
-						text: '客服',
+						text: '联系人',
 						customIcon: false,
 					},
 					{

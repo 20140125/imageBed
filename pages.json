@@ -18,7 +18,14 @@
 		}, {
 			"path": "pages/chat",
 			"style": {
-				"navigationBarTitleText": "魔盒逗图-客服",
+				"navigationBarTitleText": "魔盒逗图-联系人",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/message",
+			"style": {
+				"navigationBarTitleText": "魔盒逗图-发送消息",
 				"enablePullDownRefresh": false
 			}
 
@@ -41,7 +48,7 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "魔盒逗图",
-		"navigationBarBackgroundColor": "#2979ff",
+		"navigationBarBackgroundColor": "#393d49",
 		"backgroundColor": "#EFEFEF"
 	}
 }

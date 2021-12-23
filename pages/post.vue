@@ -39,7 +39,7 @@
 					<u-input :height="300" border type="textarea" :placeholder="JSON.stringify(authorized.weather)"></u-input>
 				</u-form-item>
 			</u-form>
-			<u-modal v-model="showOAuth" @confirm="confirmOAuth" content="授权登录" :show-title="false" show-cancel-button></u-modal>
+			<u-modal v-model="showOAuth" @confirm="confirmOAuth" content="授权登录" :show-title="false" @cancel="cancelOAuth" show-cancel-button></u-modal>
 			<OAuthLogin ref="oauth"></OAuthLogin>
 		</view>
 	</u-card>
@@ -120,6 +120,12 @@
 						value: item.value[0].name
 					})
 				});
+			},
+			/**
+			 * todo:取消弹框
+			 */
+			cancelOAuth() {
+				window.location.href="/"
 			},
 			/**
 			 * todo：确认授权登录
