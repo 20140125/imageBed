@@ -58,7 +58,7 @@
 			 */
 			async getNewImage(payload) {
 				let response = await this.$u.api.getNewImage(payload);
-				if (response.code !== 20000) {
+				if (parseInt(response.code, 10) !== 20000) {
 					this.show = true;
 					return false;
 				}

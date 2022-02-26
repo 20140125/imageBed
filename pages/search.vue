@@ -46,7 +46,7 @@
 			 * todo:获取热搜词
 			 */
 			async getHotKeyWords() {
-				let response = await this.$u.api.getConfiguration({ keyword: 'hotKeyWord' });
+				let response = await this.$u.api.getConfiguration({ keyword: 'HotKeyWord' });
 				this.hotKeyWords = response.lists || [];
 			},
 			/**
