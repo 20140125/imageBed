@@ -67,6 +67,7 @@ export default {
                             method: 'POST',
                             data: {code: loginRes.code},
                             success: (ret) => {
+								console.log(ret);
                                 userInfo.code2Session = ret.data.item.lists
                                 uni.request({
                                     url: 'https://www.fanglonger.com/api/v1/mini_program/login',
