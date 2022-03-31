@@ -60,6 +60,7 @@
 				let response = await this.$u.api.getNewImage(payload);
 				if (parseInt(response.code, 10) !== 20000) {
 					this.show = true;
+					uni.clearStorageSync('token');
 					return false;
 				}
 				/* 刷新页面数据 */
