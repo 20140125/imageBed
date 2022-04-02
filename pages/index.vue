@@ -1,6 +1,6 @@
 <template>
 	<view class="index">
-		<u-notice-bar mode="vertical" type="warning" :list="noticList"></u-notice-bar>
+		<u-notice-bar mode="vertical" type="error" :list="noticList"></u-notice-bar>
 		<lists ref="lists" :payload="payload" @setPayload="setPayload"></lists>
 		<u-loadmore :status="status" icon-type="flower" :load-text="loadText"></u-loadmore>
 		<ButtomBar></ButtomBar>

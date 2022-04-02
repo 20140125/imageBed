@@ -9,13 +9,13 @@
 					<view v-if="oldKeywordList.length > 0">历史搜索
 						<u-icon @click="oldDelete" name="trash-fill" size="30"></u-icon>
 					</view>
-					<u-tag v-for="(item, index) in oldKeywordList" @click="doSearch(item)" type="warning" mode="plain" size="mini" :text="item" :key="index"></u-tag>
+					<u-tag v-for="(item, index) in oldKeywordList" @click="doSearch(item)" type="success" mode="plain" :text="item" :key="index"></u-tag>
 				</view>
 				<view class="hot-keywords">
 					<view>热门搜索
 						<u-icon @click="hotToggle" :name="eyeName" size="40"></u-icon>
 					</view>
-					<u-tag v-if="togger" size="mini" type="warning" mode="plain" v-for="(item, index) in hotKeyWords" @click="doSearch(item)" :text="item" :key="index"></u-tag>
+					<u-tag v-if="togger" type="success" mode="plain" v-for="(item, index) in hotKeyWords" @click="doSearch(item)" :text="item" :key="index"></u-tag>
 				</view>
 			</view>
 		</u-card>
