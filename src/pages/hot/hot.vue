@@ -45,12 +45,11 @@
 			<view class="grid">
 				<view class="grid-c-06" v-for="(item, index) in list" :key="index" v-if="item.href">
 					<view class="panel" @click="goDetail(item)">
-						<image class="card-img card-list2-img" :src="item.href || ''" @longtap="download(item.href)">
-						</image>
+						<image class="card-img card-list2-img" :src="item.href || ''" @longtap="download(item.href)"></image>
 						<text class="card-num-view card-list2-num-view">{{item.width || ''}}{{item.width ? 'P' : ''}}</text>
 						<view class="card-bottm row">
 							<view class="car-title-view row">
-								<text class="card-title card-list2-title">{{item.name}}</text>
+								<rich-text class="card-title card-list2-title" :nodes="item.name"></rich-text>
 							</view>
 						</view>
 					</view>
@@ -58,8 +57,7 @@
 			</view>
 			<uni-load-more :status="loadMore"></uni-load-more>
 		</view>
-
-
+		
 	</view>
 </template>
 
@@ -213,9 +211,8 @@
 			 */
 			drawCorrelativeKeyword(keywords, keyword) {
 				keywords.map(item => {
-					item.HighlightName = item.name.replace(keyword, '<span style="color:#409EFF">' + keyword +
-						'</span>')
-				})
+					item.name = item.name.replace(keyword, '<span style="color:#409EFF">' + keyword +'</span>')
+				});
 				return keywords;
 			},
 			/**
@@ -406,6 +403,9 @@
 	}
 </script>
 <style>
+	.grid {
+		padding-top: 10px;
+	}
 	view {
 		display: block
 	}

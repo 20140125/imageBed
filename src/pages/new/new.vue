@@ -3,8 +3,7 @@
 		<view class="grid">
 			<view class="grid-c-06" v-for="(item, index) in list" :key="index" v-if="item.href">
 				<view class="panel" @click="goDetail(item)">
-					<image class="card-img card-list2-img" :src="item.href || ''" @longtap="download(item.href)">
-					</image>
+					<image class="card-img card-list2-img" :src="item.href || ''" @longtap="download(item.href)"></image>
 					<text class="card-num-view card-list2-num-view">{{item.width || ''}}{{item.width ? 'P' : ''}}</text>
 					<view class="card-bottm row">
 						<view class="car-title-view row">

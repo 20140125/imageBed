@@ -1,5 +1,5 @@
 {
-    "name" : "魔盒逗图",
+    "name" : "MagicBox",
     "appid" : "__UNI__97B9CBD",
     "description" : "逗图神器",
     "transformPx" : false,
@@ -42,7 +42,7 @@
             "minified" : true
         },
         "usingComponents" : true,
-        "appid" : "wx66956fdcff952254",
+        "appid" : "",
         "permission" : {},
         "uniStatistics" : {
             "enable" : true
