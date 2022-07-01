@@ -42,7 +42,7 @@
             "minified" : true
         },
         "usingComponents" : true,
-        "appid" : "",
+        "appid" : "wx66956fdcff952254",
         "permission" : {},
         "uniStatistics" : {
             "enable" : true

@@ -354,11 +354,7 @@
 						source: source
 					},
 					success: (ret) => {
-						if (ret.statusCode !== 200) {
-							uni.clearStorage();
-							return false;
-						}
-						if (ret.data.item.code === 20000) {
+						if (parseInt(ret.data.item.code, 10) === 20000) {
 							uni.stopPullDownRefresh();
 							this.fetch.total = ret.data.item.lists.total;
 							this.loadMore = this.fetch.total === 0 ? 'noMore' : 'more';
