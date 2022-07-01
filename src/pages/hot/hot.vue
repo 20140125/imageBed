@@ -47,11 +47,10 @@
 					<view class="panel" @click="goDetail(item)">
 						<image class="card-img card-list2-img" :src="item.href || ''" @longtap="download(item.href)">
 						</image>
-						<text
-							class="card-num-view card-list2-num-view">{{item.width || ''}}{{item.width ? 'P' : ''}}</text>
+						<text class="card-num-view card-list2-num-view">{{item.width || ''}}{{item.width ? 'P' : ''}}</text>
 						<view class="card-bottm row">
 							<view class="car-title-view row">
-								<rich-text class="card-title card-list2-title" :nodes="item.HighlightName"></rich-text>
+								<text class="card-title card-list2-title">{{item.name}}</text>
 							</view>
 						</view>
 					</view>
