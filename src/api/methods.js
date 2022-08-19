@@ -63,14 +63,14 @@ export default {
                     provider: 'weixin',
                     success: (loginRes) => {
                         uni.request({
-                            url: 'https://www.fanglonger.com/api/v1/mini_program/openid',
+                            url: 'https://api.fanglonger.com/api/v1/mini_program/openid',
                             method: 'POST',
                             data: {code: loginRes.code},
                             success: (ret) => {
 								console.log(ret);
                                 userInfo.code2Session = ret.data.item.lists
                                 uni.request({
-                                    url: 'https://www.fanglonger.com/api/v1/mini_program/login',
+                                    url: 'https://api.fanglonger.com/api/v1/mini_program/login',
                                     method: 'POST',
                                     data: userInfo,
                                     success: (login) => {

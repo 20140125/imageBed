@@ -3,8 +3,7 @@ import App from './App'
 
 Vue.config.productionTip = false
 
-Vue.prototype.$serverUrl = 'https://www.fanglonger.com/api';
-// Vue.prototype.$serverUrl = 'http://www.laravel.com/api';
+Vue.prototype.$serverUrl = 'https://api.fanglonger.com/api';
 
 App.mpType = 'app'
 
