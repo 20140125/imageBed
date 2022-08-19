@@ -1,6 +1,6 @@
 const install = (Vue, vm) => {
 	Vue.prototype.$u.http.setConfig({
-		baseUrl: 'https://www.fanglonger.com/api',
+		baseUrl: 'https://api.fanglonger.com/api',
 		header: {
 			'content-type': 'application/json',
 			'Accept': 'application/json, text/plain, */*'
